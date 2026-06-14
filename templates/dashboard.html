@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — UMT Faculty Portal{% endblock %}
+{% block content %}
+{% set active = 'dashboard' %}
+<div class="page-wrap">
+  <div class="welcome-bar">
+    <div>
+      <div class="welcome-name">Good day, {{ faculty.name }}</div>
+      <div class="welcome-sub">Welcome to UMT Combined Faculty Portal</div>
+    </div>
+    <span class="pill pill-blue">Semester S2024 — In Progress</span>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-val">{{ courses|length }}</div><div class="stat-label">My Courses</div><div class="stat-sub" style="color:var(--blue)">This semester</div></div>
+    <div class="stat-card"><div class="stat-val">{{ total_students }}</div><div class="stat-label">Total Students</div><div class="stat-sub" style="color:var(--text3)">Across all courses</div></div>
+    <div class="stat-card"><div class="stat-val {% if att_pct >= 75 %}green{% elif att_pct >= 60 %}amber{% else %}red{% endif %}">{{ att_pct }}%</div><div class="stat-label">Avg Attendance</div><div class="stat-sub" style="color:#dc3545">{{ at_risk|length }} students at risk</div></div>
+    <div class="stat-card"><div class="stat-val {% if pending > 0 %}amber{% else %}green{% endif %}">{{ pending }}</div><div class="stat-label">Pending Grades</div><div class="stat-sub" style="color:var(--text3)">Courses not submitted</div></div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="card mb-16">
+    <div class="card-head blue">Quick Actions</div>
+    <div class="card-body">
+      <div class="quick-grid">
+        <a href="/courses" class="quick-btn"><div class="quick-icon">📚</div><div class="quick-label">My Courses</div></a>
+        <a href="/courses" class="quick-btn"><div class="quick-icon">📋</div><div class="quick-label">Mark Attendance</div></a>
+        <a href="/courses" class="quick-btn"><div class="quick-icon">✏️</div><div class="quick-label">Enter Marks</div></a>
+        <a href="/courses" class="quick-btn"><div class="quick-icon">🏆</div><div class="quick-label">Grade Course</div></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <!-- My Courses -->
+    <div class="card">
+      <div class="card-head">My Courses <a href="/courses" style="font-size:11px;font-weight:400">View all →</a></div>
+      {% if courses %}
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Course</th><th>Section</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+          {% for c in courses %}
+          <tr>
+            <td><strong>{{ c.title }}</strong><br><span style="font-size:11px;color:var(--text3)">{{ c.course_id }}</span></td>
+            <td>{{ c.section }}</td>
+            <td><span class="pill {% if c.status == 'Submit' %}pill-green{% elif c.status == 'In Progress' %}pill-amber{% else %}pill-blue{% endif %}">{{ c.status }}</span></td>
+            <td><a href="/students/{{ c._id }}" class="btn btn-outline btn-sm">Manage</a></td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="card-body" style="text-align:center;color:var(--text3);padding:30px">
+        No courses yet. <a href="/courses">Add your first course →</a>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Alerts -->
+    <div class="card">
+      <div class="card-head">⚠️ Alerts &amp; Notifications</div>
+      {% if at_risk %}
+      <div class="alert alert-danger" style="margin:10px;border-radius:4px">
+        {{ at_risk|length }} student(s) have attendance below 75% and are at risk.
+      </div>
+      {% endif %}
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Student</th><th>Roll No</th><th>Attendance</th></tr></thead>
+          <tbody>
+          {% for s in at_risk %}
+          <tr>
+            <td>{{ s.name }}</td>
+            <td>{{ s.roll }}</td>
+            <td><span class="pill pill-red">{{ s.pct }}%</span></td>
+          </tr>
+          {% else %}
+          <tr><td colspan="3" style="text-align:center;color:var(--text3);padding:20px">No at-risk students 🎉</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

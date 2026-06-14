@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Register — UMT Faculty Portal{% endblock %}
+{% block content %}
+<div class="auth-page">
+  <div class="auth-left">
+    <h2>Create your account</h2>
+    <p>Register with your UMT employee details to get access to the combined faculty portal. Use your official employee code as your login ID.</p>
+    <div class="auth-note">Already have an account? <a href="/login">Login here</a></div>
+  </div>
+  <div class="auth-card" style="width:380px">
+    <div class="auth-card-top"><h3>Faculty Registration</h3><p>Fill in your details below</p></div>
+    <div class="auth-card-body">
+      {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
+      <form method="POST" action="/register">
+        <div class="form-group"><label>Full Name</label><input class="form-control" name="name" placeholder="e.g. Dr. Ahmed Khan" required></div>
+        <div class="form-row">
+          <div class="form-group"><label>Employee Code</label><input class="form-control" name="employee_code" placeholder="e.g. 00001" required></div>
+          <div class="form-group"><label>Department</label><input class="form-control" name="department" placeholder="e.g. Computer Science" required></div>
+        </div>
+        <div class="form-group"><label>Email</label><input class="form-control" type="email" name="email" placeholder="name@umt.edu.pk" required></div>
+        <div class="form-group"><label>Password</label><input class="form-control" type="password" name="password" placeholder="Create a password" required></div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg">Create Account</button>
+      </form>
+    </div>
+    <div class="auth-card-foot">By registering you agree to UMT portal terms of use.</div>
+  </div>
+</div>
+{% endblock %}

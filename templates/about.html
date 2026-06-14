@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}About — UMT Faculty Portal{% endblock %}
+{% block content %}
+{% set active = 'about' %}
+<div class="page-header">
+  <h1>About This Portal</h1>
+  <p>UMT Combined Faculty Portal — Attendance &amp; Grading System</p>
+</div>
+<div class="page-wrap" style="padding-top:0">
+  <div class="two-col mb-16">
+    <div class="card">
+      <div class="card-head">📋 Project Overview</div>
+      <div class="card-body">
+        <table style="width:100%;font-size:13px">
+          <tr><td style="padding:6px 0;color:var(--text3);width:140px">Project Title</td><td style="padding:6px 0">UMT Combined Faculty Portal</td></tr>
+          <tr><td style="padding:6px 0;color:var(--text3)">Problem Solved</td><td style="padding:6px 0">Faculty manage two separate portals for attendance &amp; grading — this unifies both</td></tr>
+          <tr><td style="padding:6px 0;color:var(--text3)">Target Users</td><td style="padding:6px 0">UMT Faculty Members</td></tr>
+          <tr><td style="padding:6px 0;color:var(--text3)">Course</td><td style="padding:6px 0">OSSD Y9 — Final Semester Project</td></tr>
+          <tr><td style="padding:6px 0;color:var(--text3)">Institution</td><td style="padding:6px 0">University of Management &amp; Technology, Lahore</td></tr>
+          <tr><td style="padding:6px 0;color:var(--text3)">Version</td><td style="padding:6px 0">1.0.0 — 2026</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">🧰 Technology Stack</div>
+      <div class="card-body">
+        <div class="form-row-3" style="gap:8px">
+          <div class="stat-card" style="padding:8px"><div style="font-weight:600;color:var(--blue);font-size:13px">FastAPI</div><div style="font-size:11px;color:var(--text3)">Backend framework</div></div>
+          <div class="stat-card" style="padding:8px"><div style="font-weight:600;color:var(--blue);font-size:13px">MongoDB Atlas</div><div style="font-size:11px;color:var(--text3)">Cloud database</div></div>
+          <div class="stat-card" style="padding:8px"><div style="font-weight:600;color:var(--blue);font-size:13px">HTML &amp; CSS</div><div style="font-size:11px;color:var(--text3)">Frontend</div></div>
+          <div class="stat-card" style="padding:8px"><div style="font-weight:600;color:var(--blue);font-size:13px">Jinja2</div><div style="font-size:11px;color:var(--text3)">Templating engine</div></div>
+          <div class="stat-card" style="padding:8px"><div style="font-weight:600;color:var(--blue);font-size:13px">Uvicorn</div><div style="font-size:11px;color:var(--text3)">ASGI server</div></div>
+          <div class="stat-card" style="padding:8px"><div style="font-weight:600;color:var(--blue);font-size:13px">Vercel</div><div style="font-size:11px;color:var(--text3)">Deployment</div></div>
+          <div class="stat-card" style="padding:8px"><div style="font-weight:600;color:var(--blue);font-size:13px">Motor</div><div style="font-size:11px;color:var(--text3)">MongoDB driver</div></div>
+          <div class="stat-card" style="padding:8px"><div style="font-weight:600;color:var(--blue);font-size:13px">Python-dotenv</div><div style="font-size:11px;color:var(--text3)">Env variables</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-head">👤 Student Information</div>
+      <div class="card-body">
+        <table style="width:100%;font-size:13px">
+          <tr><td style="padding:6px 0;color:var(--text3);width:140px">Name</td><td style="padding:6px 0">Ghulam Mohaiudin Butt</td></tr>
+          <tr><td style="padding:6px 0;color:var(--text3)">Roll Number</td><td style="padding:6px 0">F2024408168</td></tr>
+          <tr><td style="padding:6px 0;color:var(--text3)">Course</td><td style="padding:6px 0">OSSD Y9</td></tr>
+          <tr><td style="padding:6px 0;color:var(--text3)">Instructor</td><td style="padding:6px 0">Abdullah Miraj Butt</td></tr>
+          <tr><td style="padding:6px 0;color:var(--text3)">Submission Type</td><td style="padding:6px 0">Individual Project</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">📞 Contact &amp; Support</div>
+      <div class="card-body">
+        <table style="width:100%;font-size:13px">
+          <tr><td style="padding:6px 0;width:24px">✉️</td><td style="padding:6px 0">erpteam@umt.edu.pk</td></tr>
+          <tr><td style="padding:6px 0">📞</td><td style="padding:6px 0">042-111-300-200 Ext: 3769</td></tr>
+          <tr><td style="padding:6px 0">📍</td><td style="padding:6px 0">Level 4, Admin Block, UMT Lahore</td></tr>
+          <tr><td style="padding:6px 0">🌐</td><td style="padding:6px 0">umt.edu.pk</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

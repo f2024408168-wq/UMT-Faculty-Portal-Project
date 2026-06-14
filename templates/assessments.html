@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Assessments — {{ course.title }}{% endblock %}
+{% block content %}
+{% set active = 'courses' %}
+<div class="page-wrap">
+  <div class="breadcrumb"><a href="/dashboard">Home</a> › <a href="/courses">My Courses</a> › {{ course.title }} › Assessments</div>
+  <div class="action-tabs">
+    <a href="/students/{{ course._id }}"    class="btn btn-outline btn-sm">Students</a>
+    <a href="/attendance/{{ course._id }}"  class="btn btn-outline btn-sm">Attendance</a>
+    <a href="/assessments/{{ course._id }}" class="btn btn-primary btn-sm">Assessments</a>
+    <a href="/marks/{{ course._id }}"       class="btn btn-outline btn-sm">Enter Marks</a>
+    <a href="/grading/{{ course._id }}"     class="btn btn-outline btn-sm">Grading</a>
+    <a href="/attendance/report/{{ course._id }}" class="btn btn-outline btn-sm">Report</a>
+  </div>
+
+  <div class="toolbar">
+    <h2 style="color:var(--blue);font-size:15px">Course Assessments — {{ course.course_id }}</h2>
+    <div class="toolbar-right">
+      <button class="btn btn-primary" onclick="openModal('addAss')">+ Add Assessment</button>
+    </div>
+  </div>
+
+  {% if total_w > 100 %}
+  <div class="alert alert-danger">⚠️ Total weightage is {{ total_w }}% — it must not exceed 100%.</div>
+  {% elif total_w == 100 %}
+  <div class="alert alert-success">✅ Total weightage is exactly 100%.</div>
+  {% else %}
+  <div class="alert alert-warning">Total weightage so far: {{ total_w }}% (remaining: {{ 100 - total_w }}%)</div>
+  {% endif %}
+
+  <div class="card">
+    <div class="card-head">Course Assessments</div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Assessment Type</th><th>Calculation Method</th><th>Total Marks</th><th>Weightage</th><th>Actions</th></tr></thead>
+        <tbody>
+        {% for a in assessments %}
+        <tr>
+          <td><strong>{{ a.type }}</strong></td>
+          <td>{{ a.calc_method }}</td>
+          <td>{{ a.total_marks }}</td>
+          <td><span class="pill pill-blue">{{ a.weightage }}%</span></td>
+          <td>
+            <a href="/marks/{{ course._id }}" class="btn btn-outline btn-sm">Enter Marks</a>
+            <form method="POST" action="/assessments/delete/{{ a._id }}" style="display:inline" onsubmit="return confirm('Delete this assessment?')">
+              <input type="hidden" name="course_oid" value="{{ course._id }}">
+              <button class="btn btn-danger btn-sm">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" style="text-align:center;color:var(--text3);padding:30px">No assessments yet. Add your first assessment above.</td></tr>
+        {% endfor %}
+        </tbody>
+        {% if assessments %}
+        <tfoot><tr style="background:var(--blue-light)">
+          <td colspan="3" style="text-align:right;font-weight:600;color:var(--blue);padding:9px 12px">Total Weightage:</td>
+          <td style="font-weight:600;color:{% if total_w == 100 %}#166534{% elif total_w > 100 %}#7b1b1b{% else %}#856404{% endif %};padding:9px 12px">{{ total_w }}%</td>
+          <td></td>
+        </tr></tfoot>
+        {% endif %}
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="addAss" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-head">Add New Assessment <button class="modal-close" onclick="closeModal('addAss')">✕</button></div>
+    <form method="POST" action="/assessments/add">
+      <input type="hidden" name="course_oid" value="{{ course._id }}">
+      <div class="modal-body">
+        <div class="form-group"><label>Assessment Type</label>
+          <select class="form-control" name="assessment_type">
+            <option>Quiz</option><option>Assignment</option><option>Mid Term</option><option>Final Exam</option>
+            <option>Presentation</option><option>Project</option><option>Lab</option><option>Viva</option>
+            <option>Class Activity</option><option>Research Paper</option><option>Short Test</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Calculation Method</label>
+            <select class="form-control" name="calc_method">
+              <option>Average</option><option>Sum</option><option>Best 1</option><option>Best 2</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Total Marks</label><input class="form-control" type="number" name="total_marks" placeholder="e.g. 20" min="0"></div>
+        </div>
+        <div class="form-group"><label>Weightage (%)</label><input class="form-control" type="number" name="weightage" placeholder="e.g. 10" min="0" max="100" required></div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-gray" onclick="closeModal('addAss')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Add Assessment</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

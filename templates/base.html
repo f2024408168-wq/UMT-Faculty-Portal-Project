@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}UMT Faculty Portal{% endblock %}</title>
+<link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="/" class="topnav-logo">
+    <svg width="30" height="30" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="49" fill="#12336b"/>
+      <circle cx="50" cy="50" r="43" fill="none" stroke="#8ab8db" stroke-width="1.5"/>
+      <circle cx="50" cy="50" r="32" fill="#1a4b8c" stroke="#8ab8db" stroke-width="1"/>
+      <text x="50" y="47" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="Arial">UMT</text>
+      <text x="50" y="58" text-anchor="middle" fill="#8ab8db" font-size="5" font-family="Arial">Estd. 1990</text>
+    </svg>
+    <span class="topnav-logo-text">UMT Faculty Portal</span>
+  </a>
+  {% if faculty %}
+    <a href="/dashboard" class="nav-link {% if active == 'dashboard' %}active{% endif %}">Home</a>
+    <a href="/courses"   class="nav-link {% if active == 'courses'   %}active{% endif %}">My Courses</a>
+    <a href="/about"     class="nav-link {% if active == 'about'     %}active{% endif %}">About</a>
+    <a href="/settings"  class="nav-link {% if active == 'settings'  %}active{% endif %}">Settings</a>
+    <a href="/logout"    class="nav-link" style="color:#fca5a5">Logout</a>
+  {% else %}
+    <a href="/"        class="nav-link {% if active == 'home'     %}active{% endif %}">Home</a>
+    <a href="/about"   class="nav-link {% if active == 'about'    %}active{% endif %}">About</a>
+    <a href="/login"   class="nav-link {% if active == 'login'    %}active{% endif %}">Login</a>
+    <a href="/register" class="nav-link cta">Register</a>
+  {% endif %}
+</nav>
+
+{% block content %}{% endblock %}
+
+<script>
+function openModal(id){ document.getElementById(id).classList.add('open') }
+function closeModal(id){ document.getElementById(id).classList.remove('open') }
+document.addEventListener('click', function(e){
+  if(e.target.classList.contains('modal-overlay')) e.target.classList.remove('open')
+})
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}{{ student.name }} — Profile{% endblock %}
+{% block content %}
+{% set active = 'courses' %}
+<div class="page-wrap">
+  <div class="breadcrumb"><a href="/dashboard">Home</a> › <a href="/courses">My Courses</a> › <a href="/students/{{ course._id }}">{{ course.title }}</a> › {{ student.name }}</div>
+
+  <div class="two-col">
+    <!-- Profile Card -->
+    <div class="card">
+      <div class="card-head blue">Student Profile — Combined View</div>
+      <div class="profile-top">
+        <div class="profile-avatar">{{ student.name[:2]|upper }}</div>
+        <div>
+          <div class="profile-name">{{ student.name }}</div>
+          <div class="profile-meta">{{ student.roll_no }} · {{ student.program }} · Section {{ student.section }}</div>
+          <div class="profile-meta">{{ student.email }}</div>
+        </div>
+      </div>
+      <div class="profile-stats">
+        <div class="ps-item"><div class="ps-val {% if att_pct >= 75 %}green{% elif att_pct >= 60 %}amber{% else %}red{% endif %}" style="color:{% if att_pct >= 75 %}#166534{% elif att_pct >= 60 %}#856404{% else %}#7b1b1b{% endif %}">{{ att_pct }}%</div><div class="ps-lbl">Attendance</div></div>
+        <div class="ps-item"><div class="ps-val">{{ present_count }}/{{ total_lecs }}</div><div class="ps-lbl">Lectures</div></div>
+        <div class="ps-item"><div class="ps-val">
+          {% if final_grade != 'N/A' %}<span class="gb {% if final_grade in ['A','A-'] %}gb-A{% elif final_grade in ['B+','B','B-'] %}gb-B{% elif final_grade in ['C+','C','C-'] %}gb-C{% else %}gb-F{% endif %}">{{ final_grade }}</span>{% else %}—{% endif %}
+        </div><div class="ps-lbl">Current Grade</div></div>
+      </div>
+      {% if att_pct < 75 %}
+      <div class="alert alert-danger" style="margin:14px;margin-bottom:0">⚠️ This student is below the 75% attendance requirement.</div>
+      {% endif %}
+      <div class="card-body">
+        <a href="/students/{{ course._id }}" class="btn btn-outline btn-block">← Back to Students</a>
+      </div>
+    </div>
+
+    <!-- Assessment Breakdown -->
+    <div class="card">
+      <div class="card-head">Assessment Breakdown — {{ course.title }}</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Assessment</th><th>Obtained</th><th>Total</th><th>Weightage</th></tr></thead>
+          <tbody>
+          {% for b in breakdown %}
+          <tr>
+            <td><strong>{{ b.type }}</strong></td>
+            <td>{{ b.obtained }}</td>
+            <td>{{ b.total }}</td>
+            <td><span class="pill pill-blue">{{ b.weightage }}%</span></td>
+          </tr>
+          {% else %}
+          <tr><td colspan="4" style="text-align:center;color:var(--text3);padding:20px">No marks entered yet</td></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Attendance Report — {{ course.title }}{% endblock %}
+{% block content %}
+{% set active = 'courses' %}
+<div class="page-wrap">
+  <div class="breadcrumb"><a href="/dashboard">Home</a> › <a href="/courses">My Courses</a> › {{ course.title }} › Attendance Report</div>
+  <div class="action-tabs">
+    <a href="/students/{{ course._id }}"    class="btn btn-outline btn-sm">Students</a>
+    <a href="/attendance/{{ course._id }}"  class="btn btn-outline btn-sm">Attendance</a>
+    <a href="/assessments/{{ course._id }}" class="btn btn-outline btn-sm">Assessments</a>
+    <a href="/marks/{{ course._id }}"       class="btn btn-outline btn-sm">Enter Marks</a>
+    <a href="/grading/{{ course._id }}"     class="btn btn-outline btn-sm">Grading</a>
+    <a href="/attendance/report/{{ course._id }}" class="btn btn-primary btn-sm">Report</a>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-val">{{ total_lecs }}</div><div class="stat-label">Total Lectures</div></div>
+    <div class="stat-card"><div class="stat-val {% if avg >= 75 %}green{% elif avg >= 60 %}amber{% else %}red{% endif %}">{{ avg }}%</div><div class="stat-label">Class Average</div></div>
+    <div class="stat-card"><div class="stat-val red">{{ at_risk_count }}</div><div class="stat-label">Below 75%</div></div>
+    <div class="stat-card"><div class="stat-val green">{{ perfect }}</div><div class="stat-label">100% Attendance</div></div>
+  </div>
+
+  {% if at_risk_count > 0 %}
+  <div class="alert alert-danger">⚠️ {{ at_risk_count }} student(s) are below 75% attendance and at risk of failing the course under UMT attendance policy.</div>
+  {% endif %}
+
+  <div class="card">
+    <div class="card-head blue">
+      Attendance Report — {{ course.title }}
+      <button onclick="window.print()" class="btn btn-outline btn-sm" style="color:#fff;border-color:rgba(255,255,255,.4)">🖨️ Print / Save PDF</button>
+    </div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>#</th><th>Roll No.</th><th>Name</th><th>Attended</th><th>Total</th><th>%</th><th>Progress</th><th>Status</th></tr></thead>
+        <tbody>
+        {% for r in report %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td><strong style="color:var(--blue)">{{ r.roll_no }}</strong></td>
+          <td><a href="/student-profile/{{ r._id }}">{{ r.name }}</a></td>
+          <td>{{ r.present }}</td>
+          <td>{{ r.total }}</td>
+          <td style="font-weight:600;color:{% if r.pct >= 75 %}#166534{% elif r.pct >= 60 %}#856404{% else %}#7b1b1b{% endif %}">{{ r.pct }}%</td>
+          <td>
+            <div class="prog-wrap">
+              <div class="prog-fill {% if r.pct >= 75 %}prog-green{% elif r.pct >= 60 %}prog-amber{% else %}prog-red{% endif %}" style="width:{{ r.pct }}%"></div>
+            </div>
+          </td>
+          <td>
+            <span class="pill {% if r.status == 'Good' %}pill-green{% elif r.status == 'Warning' %}pill-amber{% else %}pill-red{% endif %}">{{ r.status }}</span>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="8" style="text-align:center;color:var(--text3);padding:30px">No attendance data yet. Mark attendance first.</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

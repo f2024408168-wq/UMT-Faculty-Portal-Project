@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Mark Attendance — {{ course.title }}{% endblock %}
+{% block content %}
+{% set active = 'courses' %}
+<div class="page-wrap">
+  <div class="breadcrumb"><a href="/dashboard">Home</a> › <a href="/courses">My Courses</a> › {{ course.title }} › Attendance</div>
+  <div class="action-tabs">
+    <a href="/students/{{ course._id }}"    class="btn btn-outline btn-sm">Students</a>
+    <a href="/attendance/{{ course._id }}"  class="btn btn-primary btn-sm">Attendance</a>
+    <a href="/assessments/{{ course._id }}" class="btn btn-outline btn-sm">Assessments</a>
+    <a href="/marks/{{ course._id }}"       class="btn btn-outline btn-sm">Enter Marks</a>
+    <a href="/grading/{{ course._id }}"     class="btn btn-outline btn-sm">Grading</a>
+    <a href="/attendance/report/{{ course._id }}" class="btn btn-outline btn-sm">Report</a>
+  </div>
+
+  <!-- Course Info -->
+  <div class="card mb-16">
+    <div class="card-head blue">
+      Mark Attendance — {{ course.title }}
+      <span style="font-size:12px;font-weight:400">{{ course.course_id }} · Section {{ course.section }}</span>
+    </div>
+    <div class="card-body">
+      <form method="POST" action="/attendance/save">
+        <input type="hidden" name="course_oid" value="{{ course._id }}">
+        <div class="form-row-4" style="margin-bottom:14px">
+          <div class="form-group">
+            <label>Lecture Type</label>
+            <select class="form-control" name="lecture_type">
+              <option>Theory 1</option><option>Theory 2</option><option>Lab</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Classroom</label><input class="form-control" name="classroom" placeholder="e.g. 1C-14" required></div>
+          <div class="form-group"><label>Date</label><input class="form-control" type="date" name="date" required></div>
+        </div>
+
+        {% if students %}
+        <div class="alert alert-info">All students are marked <strong>Present</strong> by default. Uncheck to mark absent.</div>
+        <div class="tbl-wrap" style="margin-bottom:14px">
+          <table class="tbl">
+            <thead><tr><th>#</th><th>Roll No.</th><th>Student Name</th><th style="text-align:center">Present</th></tr></thead>
+            <tbody>
+            {% for s in students %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td><strong style="color:var(--blue)">{{ s.roll_no }}</strong></td>
+              <td>{{ s.name }}</td>
+              <td style="text-align:center"><input type="checkbox" class="att-cb" name="present_{{ s._id }}" checked></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <button type="submit" class="btn btn-primary">💾 Save Attendance</button>
+        {% else %}
+        <div class="alert alert-warning">No students enrolled yet. <a href="/students/{{ course._id }}">Add students first →</a></div>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+
+  <!-- Past Lectures -->
+  {% if lectures %}
+  <div class="card">
+    <div class="card-head">Attendance History ({{ lectures|length }} lectures)</div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>#</th><th>Date</th><th>Type</th><th>Classroom</th><th>Present</th><th>Absent</th></tr></thead>
+        <tbody>
+        {% for l in lectures|reverse %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ l.date }}</td>
+          <td><span class="pill pill-blue">{{ l.lecture_type }}</span></td>
+          <td>{{ l.classroom }}</td>
+          <td style="color:#166534;font-weight:500">{{ l.records|selectattr('present')|list|length }}</td>
+          <td style="color:#7b1b1b;font-weight:500">{{ l.records|rejectattr('present')|list|length }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

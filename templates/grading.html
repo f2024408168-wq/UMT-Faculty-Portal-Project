@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Grading — {{ course.title }}{% endblock %}
+{% block content %}
+{% set active = 'courses' %}
+<div class="page-wrap">
+  <div class="breadcrumb"><a href="/dashboard">Home</a> › <a href="/courses">My Courses</a> › {{ course.title }} › Grading</div>
+  <div class="action-tabs">
+    <a href="/students/{{ course._id }}"    class="btn btn-outline btn-sm">Students</a>
+    <a href="/attendance/{{ course._id }}"  class="btn btn-outline btn-sm">Attendance</a>
+    <a href="/assessments/{{ course._id }}" class="btn btn-outline btn-sm">Assessments</a>
+    <a href="/marks/{{ course._id }}"       class="btn btn-outline btn-sm">Enter Marks</a>
+    <a href="/grading/{{ course._id }}"     class="btn btn-primary btn-sm">Grading</a>
+    <a href="/attendance/report/{{ course._id }}" class="btn btn-outline btn-sm">Report</a>
+  </div>
+
+  {% if not grade_data %}
+  <div class="alert alert-warning">No students or marks yet. Add students and enter marks first.</div>
+  {% else %}
+  <div class="two-col mb-16">
+    <!-- Calculation Panel -->
+    <div class="card">
+      <div class="card-head">Grade Calculation Summary</div>
+      <div class="card-body">
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f4f8;font-size:13px"><span style="color:var(--text2)">Highest Score</span><strong>{{ high }}</strong></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f4f8;font-size:13px"><span style="color:var(--text2)">Lowest Score</span><strong>{{ low }}</strong></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f4f8;font-size:13px"><span style="color:var(--text2)">Class Average</span><strong>{{ avg }}</strong></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px"><span style="color:var(--text2)">Student Count</span><strong>{{ grade_data|length }}</strong></div>
+        <div class="alert alert-info mt-12" style="margin-bottom:0">Grades are calculated automatically based on assessment marks and weightages. You can override any grade in the table.</div>
+      </div>
+    </div>
+    <!-- Distribution -->
+    <div class="card">
+      <div class="card-head">Grade Distribution</div>
+      <div class="card-body">
+        {% set colors = {'A':'#166534','A-':'#28a745','B+':'#1d4ed8','B':'#1e40af','B-':'#92400e','C+':'#b45309','C':'#78350f','C-':'#9a3412','F':'#991b1b'} %}
+        {% for g in ['A','A-','B+','B','B-','C+','C','C-','F'] %}
+        {% set count = grade_dist.get(g, 0) %}
+        {% if count > 0 %}
+        <div class="dist-row">
+          <span class="dist-label">{{ g }}</span>
+          <div class="dist-track"><div class="dist-fill" style="width:{{ (count / grade_data|length * 100)|round }}%;background:{{ colors[g] }}">{{ count }}</div></div>
+          <span class="dist-count">{{ count }}</span>
+        </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head blue">Student Grades — {{ course.title }}</div>
+    <form method="POST" action="/grading/save/{{ course._id }}">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>#</th><th>Roll No.</th><th>Name</th><th>Calculated Total</th><th>System Grade</th><th>Final Grade</th></tr></thead>
+          <tbody>
+          {% for g in grade_data %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td><strong style="color:var(--blue)">{{ g.roll_no }}</strong></td>
+            <td><a href="/student-profile/{{ g._id }}">{{ g.name }}</a></td>
+            <td>{{ g.total }}</td>
+            <td><span class="gb {% if g.grade in ['A','A-'] %}gb-A{% elif g.grade in ['B+','B','B-'] %}gb-B{% elif g.grade in ['C+','C','C-'] %}gb-C{% else %}gb-F{% endif %}">{{ g.grade }}</span></td>
+            <td>
+              <select name="grade_{{ g._id }}" class="form-control" style="width:100px">
+                {% for opt in ['A','A-','B+','B','B-','C+','C','C-','F'] %}
+                <option {% if (g.saved_grade and g.saved_grade == opt) or (not g.saved_grade and g.grade == opt) %}selected{% endif %}>{{ opt }}</option>
+                {% endfor %}
+              </select>
+            </td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="card-body" style="border-top:1px solid var(--border)">
+        <button type="submit" class="btn btn-success" onclick="return confirm('Submit final grades for this course? Status will change to Submit.')">✅ Save Grades &amp; Submit Course Result</button>
+      </div>
+    </form>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

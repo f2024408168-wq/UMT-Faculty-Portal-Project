@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}UMT Combined Faculty Portal{% endblock %}
+{% block content %}
+
+<div class="hero">
+  <svg width="90" height="90" viewBox="0 0 100 100" style="margin:0 auto 18px;display:block">
+    <circle cx="50" cy="50" r="49" fill="#12336b"/>
+    <circle cx="50" cy="50" r="43" fill="none" stroke="#8ab8db" stroke-width="1.5"/>
+    <circle cx="50" cy="50" r="35" fill="#1a4b8c"/>
+    <circle cx="50" cy="50" r="27" fill="#12336b" stroke="#8ab8db" stroke-width="1"/>
+    <text x="50" y="47" text-anchor="middle" fill="#fff" font-size="14" font-weight="700" font-family="Arial">UMT</text>
+    <text x="50" y="58" text-anchor="middle" fill="#8ab8db" font-size="5.5" font-family="Arial">Estd. 1990</text>
+    <text x="50" y="17" text-anchor="middle" fill="#8ab8db" font-size="4" font-family="Arial">UNIVERSITY OF MANAGEMENT</text>
+    <text x="50" y="85" text-anchor="middle" fill="#8ab8db" font-size="3.8" font-family="Arial">AND TECHNOLOGY · LAHORE</text>
+  </svg>
+  <h1>UMT Combined Faculty Portal</h1>
+  <p>Attendance &amp; Grading — unified in one place</p>
+  <p style="color:#6a9abf;font-size:12px;font-style:italic">"We Transform Learners into Leaders of Tomorrow"</p>
+  <div class="hero-btns">
+    <a href="/login"    class="btn btn-lg" style="background:#fff;color:#1a4b8c;font-weight:600">Login to Portal</a>
+    <a href="/register" class="btn btn-lg btn-outline" style="color:#fff;border-color:rgba(255,255,255,.5)">Register</a>
+  </div>
+</div>
+<div class="wave-div"></div>
+
+<div class="page-wrap" style="padding-top:28px">
+  <div style="text-align:center;margin-bottom:20px">
+    <h2 style="color:var(--blue);font-size:18px;margin-bottom:4px">Everything a UMT faculty member needs</h2>
+    <p style="color:var(--text2);font-size:13px">Two portals merged into one — saving time every single day</p>
+  </div>
+  <div class="feat-grid mb-16">
+    <div class="feat-card"><div class="feat-icon">📋</div><div class="feat-title">Attendance Management</div><div class="feat-desc">Mark Theory 1, Theory 2 and Lab lectures. Toggle present/absent per student. Edit past sessions anytime.</div></div>
+    <div class="feat-card"><div class="feat-icon">🏆</div><div class="feat-title">Grading System</div><div class="feat-desc">Auto grading with distribution chart. Manual override per student. Submit course results with one click.</div></div>
+    <div class="feat-card"><div class="feat-icon">📝</div><div class="feat-title">Assessment Builder</div><div class="feat-desc">Create Quiz, Mid Term, Final, Project, Viva and more. Set total marks and weightage per assessment.</div></div>
+    <div class="feat-card"><div class="feat-icon">📊</div><div class="feat-title">Attendance Report <span class="new-tag">New</span></div><div class="feat-desc">Per-student attendance % with progress bars. Automatic red alert for students below 75%.</div></div>
+    <div class="feat-card"><div class="feat-icon">📄</div><div class="feat-title">PDF Export <span class="new-tag">New</span></div><div class="feat-desc">Download attendance reports and grade sheets as PDF in one click. Not available in current UMT portals.</div></div>
+    <div class="feat-card"><div class="feat-icon">👤</div><div class="feat-title">Student Profile <span class="new-tag">New</span></div><div class="feat-desc">One page showing every student's attendance + all grades in a combined view.</div></div>
+  </div>
+</div>
+
+<div class="stats-strip">
+  <div class="strip-item"><div class="strip-num">16</div><div class="strip-lbl">Portal Pages</div></div>
+  <div class="strip-item"><div class="strip-num">18+</div><div class="strip-lbl">API Endpoints</div></div>
+  <div class="strip-item"><div class="strip-num">MongoDB</div><div class="strip-lbl">Atlas Cloud DB</div></div>
+  <div class="strip-item"><div class="strip-num">Vercel</div><div class="strip-lbl">Deployed Live</div></div>
+</div>
+<div class="site-footer">
+  <span>University of Management and Technology · Lahore · umt.edu.pk</span>
+  <span>OSSD Y9 Final Project · Ghulam Mohaiudin Butt · F2024408168</span>
+</div>
+{% endblock %}
